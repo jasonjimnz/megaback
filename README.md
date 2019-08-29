@@ -32,7 +32,7 @@ A Code challenge service for managing solar plants
 - /plant/<panel_id>
     - GET:
         - Retrieves a Plant based on their ID
-       - Response: ```
+        - Response: ```
 {
     "id": 4,
     "name": "created plant",
@@ -40,7 +40,9 @@ A Code challenge service for managing solar plants
 }```
     - PUT:
         - Updates a Plant based on their ID
-       - Response: ```
+        - Form:
+            - name: required new name of the plant
+        - Response: ```
 {
     "id": 4,
     "name": "created plant",
@@ -48,7 +50,7 @@ A Code challenge service for managing solar plants
 }```
     - DELETE:
         - Deletes a Plant based on their ID
-       - Response: ```
+        - Response: ```
 {
     "deleted": true
 }```
