@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('panels/refresh/<int:plant_id>', core_views.MonitoringServiceView.as_view(), name='panels_refresh'),
+    path('plants', core_views.PlantView.as_view(), name='plant_list'),
+    path('plant/<int:plant_id>', core_views.PlantView.as_view(), name='manage_plants')
+
 ]
