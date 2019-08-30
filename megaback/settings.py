@@ -25,7 +25,7 @@ SECRET_KEY = 'z8w4&&)%d0xim3-+^!htp@z@jx46tng4po_td0%vh+k^wqr=g9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'core'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -124,3 +126,5 @@ STATIC_URL = '/static/'
 MONITORING_SERVICE_URL = "http://192.168.1.11:5000/"
 
 VERSION = "0.0.1"
+
+CORS_ORIGIN_ALLOW_ALL = True
