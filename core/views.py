@@ -1,11 +1,14 @@
+import csv
+
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import JsonResponse, QueryDict
+from django.http import JsonResponse, QueryDict, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 from django.utils.decorators import method_decorator
+from django.utils.text import slugify
 from django.views import View
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -154,3 +157,53 @@ class PlantView(CoreBaseView):
             return self.success_response({'deleted': True})
         except ObjectDoesNotExist:
             return self.rest_not_found_response('Plant does not exist')
+
+
+class GeneratePlantReportView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        plant_id = self.kwargs.get('plant_id')
+        plant_headers = [
+            'Plant name',
+            'Plant Id',
+            'Datapoint id',
+            'Expected energy',
+            'Observed energy',
+            'Expected irradiation',
+            'Observed irradiation'
+        ]
+        try:
+            plant = Plant.objects.get(id=plant_id)
+
+            plant_json = plant.get_serialized_model()
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="plant_{plant}.csv"'.format(
+                plant=slugify(plant.name)
+            )
+
+            writer = csv.writer(response)
+            writer.writerow(plant_headers)
+            for plant_json_element in plant_json['datapoints']:
+                writer.writerow(
+                    [
+                        plant_json['name'],
+                        plant_json['id'],
+                        plant_json_element['id'],
+                        plant_json_element['expected']['energy'],
+                        plant_json_element['observed']['energy'],
+                        plant_json_element['expected']['irradiation'],
+                        plant_json_element['observed']['irradiation']
+                    ]
+                )
+
+            return response
+        except ObjectDoesNotExist:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="plant_{plant}.csv"'.format(
+                plant="not_found_plant"
+            )
+
+            writer = csv.writer(response)
+            writer.writerow(plant_headers)
+
+            return response

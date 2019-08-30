@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('panels/refresh/<int:plant_id>', core_views.MonitoringServiceView.as_view(), name='panels_refresh'),
     path('plants', core_views.PlantView.as_view(), name='plant_list'),
-    path('plant/<int:plant_id>', core_views.PlantView.as_view(), name='manage_plants')
+    path('plant/<int:plant_id>', core_views.PlantView.as_view(), name='manage_plants'),
+    path('plant/<int:plant_id>/report', core_views.GeneratePlantReportView.as_view(), name='plant_report')
 
 ]
