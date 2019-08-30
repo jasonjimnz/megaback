@@ -26,5 +26,6 @@ ENV MONITOR_SERVICE "http://192.168.1.11:5000"
 
 RUN git clone https://github.com/jasonjimnz/megaback.git
 RUN pip3 install -r megaback/requirements.txt
+RUN echo "30 01 * * * python  /megaback/manage.py refresh_datapoints" >> /etc/crontab
 
 CMD [ "/megaback/start_server.sh"]
