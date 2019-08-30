@@ -77,13 +77,25 @@ WSGI_APPLICATION = 'megaback.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+django_engine = os.environ.get('DJANGO_DATABASE_ENGINE', 'sqlite')
+if django_engine == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.{engine}'.format(engine=django_engine),
+            'NAME': os.environ.get('DJANGO_DATABASE_NAME'),
+            'USERNAME': os.environ.get('DJANGO_DATABASE_NAME'),
+            'PASSWORd': os.environ.get('DJANGO_DATABASE_NAME'),
+            'HOST': os.environ.get('DJANGO_DATABASE_NAME'),
+            'PORT': os.environ.get('DJANGO_DATABASE_PORT')
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -123,7 +135,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MONITORING_SERVICE_URL = "http://192.168.1.11:5000/"
+MONITORING_SERVICE_URL = os.environ.get('MONITOR_SERVICE', "http://192.168.1.11:5000/")
 
 VERSION = "0.0.1"
 
