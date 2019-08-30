@@ -2,6 +2,13 @@
 
 A Code challenge service for managing solar plants
 
+# Installation
+ - You can use the Dockerfile (read it for the Monitoring service info) for building faster or build it manually
+ - Install the requirements using ```pip install -r requirements.txx``` you can use Virtual Env
+ - Check the settings.py file for changing the database, by default it will use sqlite3
+ - Apply the migrations with ```python manage.py migrate```
+ - Run the server with ```python manage.py runserver```
+
 ### Endpoints
 - /plants
     - GET:
@@ -87,5 +94,6 @@ A Code challenge service for managing solar plants
     }
   ]
 } ```
-- /panels/report:
-    - TODO: Work in progress
+- plant/<plant_id>/report:
+    - GET
+        - Retrieves a CSV file with the plant and datapanels info
